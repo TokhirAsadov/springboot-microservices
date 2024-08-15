@@ -1,8 +1,9 @@
 package uz.tokhir.orderservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import uz.tokhir.orderservice.payload.OrderRequest;
 import uz.tokhir.orderservice.service.OrderService;
 
 @RestController
@@ -11,4 +12,11 @@ import uz.tokhir.orderservice.service.OrderService;
 public class OrderController {
 
     private final OrderService orderService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public String placeOrder(@RequestBody OrderRequest orderRequest) {
+        orderService.placeOrder(orderRequest);
+        return "Order Placed Successfully";
+    }
 }

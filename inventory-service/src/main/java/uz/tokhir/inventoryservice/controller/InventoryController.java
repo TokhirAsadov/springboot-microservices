@@ -1,8 +1,8 @@
 package uz.tokhir.inventoryservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import uz.tokhir.inventoryservice.service.InventoryService;
 
 @RestController
@@ -11,4 +11,9 @@ import uz.tokhir.inventoryservice.service.InventoryService;
 public class InventoryController {
     private final InventoryService inventoryService;
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public boolean isInStock(@RequestParam String skuCode, @RequestParam Integer quantity){
+        return inventoryService.isInStock(skuCode, quantity);
+    }
 }

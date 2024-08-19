@@ -2,7 +2,7 @@ version: '4'
 services:
   mysql:
     image: mysql:8.3.0
-    container_name: mysql_microservices
+    container_name: order_mysql_microservices
     environment:
       MYSQL_ROOT_PASSWORD: mysql
     ports:

@@ -10,6 +10,7 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
 import org.testcontainers.containers.MySQLContainer;
 import org.hamcrest.Matchers;
+import uz.tokhir.orderservice.stubs.InventoryClientStub;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -43,6 +44,8 @@ class OrderServiceApplicationTests {
 				  "quantity": 1
 				}
 				""";
+
+		InventoryClientStub.stubInventoryCall("iphone_14",1);
 
 		var responseBodyString = RestAssured.given()
 				.contentType("application/json")

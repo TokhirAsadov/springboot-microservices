@@ -48,4 +48,12 @@ public class Routes {
                 .route(RequestPredicates.path("/api/inventory"), HandlerFunctions.http("http://localhost:8082"))
                 .build();
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> inventoryServiceSwaggerRoute() {
+        return GatewayRouterFunctions.route("inventory_service_swagger")
+                .route(RequestPredicates.path("/aggregate/inventory-service/v3/api-docs"), HandlerFunctions.http("http://localhost:8082"))
+                .filter(FilterFunctions.setPath("/tohir/api-docs"))
+                .build();
+    }
 }

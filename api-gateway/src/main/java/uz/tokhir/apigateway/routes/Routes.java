@@ -35,6 +35,14 @@ public class Routes {
     }
 
     @Bean
+    public RouterFunction<ServerResponse> orderServiceSwaggerRoute() {
+        return GatewayRouterFunctions.route("order_service_swagger")
+                .route(RequestPredicates.path("/aggregate/order-service/v3/api-docs"), HandlerFunctions.http("http://localhost:8081"))
+                .filter(FilterFunctions.setPath("/tohir/api-docs"))
+                .build();
+    }
+
+    @Bean
     public RouterFunction<ServerResponse> inventoryServiceRoute() {
         return GatewayRouterFunctions.route("inventory_service")
                 .route(RequestPredicates.path("/api/inventory"), HandlerFunctions.http("http://localhost:8082"))

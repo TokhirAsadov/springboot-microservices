@@ -28,6 +28,11 @@ public class ProductService {
     }
 
     public List<ProductResponse> getAllProducts() {
+//        try {
+//            Thread.sleep(5000);
+//        }catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         return productRepository.findAll().stream().map(product -> new ProductResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice())).toList();
     }
 }

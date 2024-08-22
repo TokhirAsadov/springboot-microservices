@@ -1,8 +1,12 @@
+import AppContent from "./components/AppContent";
+
 function App() {
   return (
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
+      <div className="row">
+          <div className="col">
+              <AppContent/>
+          </div>
+      </div>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import '/node_modules/primeflex/primeflex.css'
@@ -8,46 +8,43 @@ import { Card } from 'primereact/card';
 
 import {httpClient} from "./HttpClient";
 import {kc} from "./Keycloak";
+import Nav from "./components/Nav";
 
-/*
-  Init Options
-*/
-let initOptions = {
-    url: "http://localhost:8181/",
-    realm: "spring-microservices-security-realm",
-    clientId: "react-client",
-    redirectUri: "http://localhost:3000/"
-}
 
-kc.init({
-    onLoad: 'login-required', // Supported values: 'check-sso' , 'login-required'
-    checkLoginIframe: true,
-    pkceMethod: 'S256'
-}).then((auth) => {
-    if (!auth) {
-        window.location.reload();
-    } else {
-        /* Remove below logs if you are using this on production */
-        console.info("Authenticated");
-        console.log('auth', auth)
-        console.log('Keycloak', kc)
-        console.log('Access Token', kc.token)
-        console.log('parsed', kc.tokenParsed)
-
-        /* http client will use this header in every request it sends */
-        httpClient.defaults.headers.common['Authorization'] = `Bearer ${kc.token}`;
-
-        kc.onTokenExpired = () => {
-            console.log('token expired')
-        }
-    }
-}, () => {
-    /* Notify the user if necessary */
-    console.error("Authentication Failed");
-});
 
 const App = () =>{
-    const [infoMessage, setInfoMessage] = useState('');
+    const [isAuth, setIsAuth] = useState(false);
+
+    useEffect(() => {
+        kc.init({
+            onLoad: 'login-required', // Supported values: 'check-sso' , 'login-required'
+            checkLoginIframe: true,
+            pkceMethod: 'S256'
+        }).then((auth) => {
+            if (!auth) {
+                window.location.reload();
+            } else {
+                /* Remove below logs if you are using this on production */
+                console.info("Authenticated");
+                console.log('auth', auth)
+                console.log('Keycloak', kc)
+                console.log('Access Token', kc.token)
+                console.log('parsed', kc.tokenParsed)
+                setIsAuth(kc.authenticated)
+
+                /* http client will use this header in every request it sends */
+                httpClient.defaults.headers.common['Authorization'] = `Bearer ${kc.token}`;
+
+                kc.onTokenExpired = () => {
+                    console.log('token expired')
+                }
+            }
+        }, () => {
+            /* Notify the user if necessary */
+            console.error("Authentication Failed");
+        });
+
+    }, []);
 
     /* To demonstrate : http client adds the access token to the Authorization header */
     const callBackend = () => {
@@ -55,24 +52,22 @@ const App = () =>{
 
     };
 
-    // const username = kc?.tokenParsed?.preferred_username;
-
     return (
-        <div className="App">
-            <div className='grid'>
-                <div className='col-12'>
-                    <h1>My Secured React App</h1>
-                </div>
-            </div>
-            <div className="grid">
-
-            </div>
-
-            <div className='grid'>
+        <div className="flex flex-col">
+            {isAuth && <Nav
+                isAuthenticated={kc.authenticated}
+                logout={() => {
+                    kc.logout({redirectUri: "http://localhost:3000"});
+                }}
+                login={() => {
+                    kc.login();
+                }}
+            />}
+           {/* <div className='grid'>
                 <div className='col-1'></div>
                 <div className='col-2'>
                     <div className="col">
-                        <Button onClick={() => { setInfoMessage(kc.authenticated ? 'Authenticated: TRUE -> '+kc?.tokenParsed?.preferred_username : 'Authenticated: FALSE') }}
+                        <Button onClick={() => { setInfoMessage(kc.authenticated ? 'Authenticated: TRUE -> ' + kc?.tokenParsed?.preferred_username : 'Authenticated: FALSE') }}
                                 className="m-1 custom-btn-style"
                                 label='Is Authenticated' />
 
@@ -98,7 +93,7 @@ const App = () =>{
 
                         <Button onClick={() => { kc.updateToken(10).then((refreshed) => { setInfoMessage('Token Refreshed: ' + refreshed.toString()) }, (e) => { setInfoMessage('Refresh Error') }) }}
                                 className="m-1 custom-btn-style"
-                                label='Update Token (if about to expire)' />  {/** 10 seconds */}
+                                label='Update Token (if about to expire)' />  * 10 seconds
 
                         <Button onClick={callBackend}
                                 className='m-1 custom-btn-style'
@@ -123,16 +118,14 @@ const App = () =>{
                     </div>
                 </div>
                 <div className='col-6'>
-
                     <Card>
                         <p style={{ wordBreak: 'break-all' }} id='infoPanel'>
                             {infoMessage}
                         </p>
                     </Card>
                 </div>
-
                 <div className='col-2'></div>
-            </div>
+            </div>*/}
 
 
 

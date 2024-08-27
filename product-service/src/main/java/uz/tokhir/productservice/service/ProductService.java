@@ -36,4 +36,17 @@ public class ProductService {
 //        }
         return productRepository.findAll().stream().map(product -> new ProductResponse(product.getId(), product.getName(),product.getSkuCode(), product.getDescription(), product.getPrice())).toList();
     }
+
+    public String deleteProduct(String id) {
+        if (productRepository.existsById(id)) {
+            try {
+                productRepository.deleteById(id);
+                return "Product deleted successfully";
+            }
+            catch (Exception e) {
+                return "Error.. Something went wrong";
+            }
+        }
+        return "Error.. Product not found by id: "+id;
+    }
 }

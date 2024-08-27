@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import trash from './../icon/trash.svg'
 
 const Product = ({product, index}) => {
     const [order,setOrder]=useState({...product,quantity: null});
@@ -7,7 +8,12 @@ const Product = ({product, index}) => {
     }, [order]);
     return (
         <div className='w-64 flex flex-col gap-1 px-4 py-2 rounded-lg bg-white' key={product.id}>
-            <div className="text-lg font-medium">Product: #{index}</div>
+            <div className="flex justify-between">
+                <div className="text-lg font-medium">Product: #{index}</div>
+                <button className={'flex items-center justify-center border border-red-600 text-white rounded-lg px-1 hover:bg-red-500'}>
+                    <img src={trash} alt="trash" width={20} height={20}/>
+                </button>
+            </div>
             <hr/>
             {product?.name && <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Name:</span>

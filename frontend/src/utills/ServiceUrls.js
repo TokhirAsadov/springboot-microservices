@@ -1,8 +1,7 @@
 export const TokenType="Bearer ";
 export const TOKEN='YTIT_TOKEN';
 
-export const getHeaders = () => {
-  const token=localStorage.getItem(TOKEN)
+export const getHeaders = (token) => {
   const headers={
     'Authorization':TokenType+token,
     'Access-Control-Allow-Origin': '*'
@@ -15,11 +14,12 @@ export const getToken = () => {
   return { token }
 }
 
-export const BASE_URL = "/api/v1/desktop"  ;
+export const BASE_URL = "http://localhost:9000/api";
+// export const BASE_URL = "/api";
 
 
-export const AUTH = {
-  LOGIN: "/auth/login",
+export const PRODUCT = {
+  GET_ALL: "/product",
   EMAIL: "/auth/email/"
 };
 

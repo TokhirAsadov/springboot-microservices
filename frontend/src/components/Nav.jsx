@@ -3,7 +3,7 @@ import { kc } from "../Keycloak";
 
 const Nav = ({ isAuthenticated, login, logout }) => {
     return (
-        <div className={'flex gap-4 justify-between px-8 py-4 bg-blue-50'}>
+        <div className={'h-16 px-16 flex gap-4 justify-between items-center bg-blue-50'}>
             <div className={'font-bold text-blue-500 text-ls'}>MICROSERVICES</div>
             {
                 isAuthenticated ? (

@@ -1,19 +1,31 @@
-import React, {useEffect, useState} from "react";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.min.css";
-import '/node_modules/primeflex/primeflex.css'
-import { Button } from 'primereact/button';
-import { Card } from 'primereact/card';
-
+import {useEffect, useState} from "react";
 
 import {httpClient} from "./HttpClient";
 import {kc} from "./Keycloak";
 import Nav from "./components/Nav";
+import axios from "axios";
+import {BASE_URL, getHeaders, PRODUCT, TokenType} from "./utills/ServiceUrls";
+import Products from "./components/Products";
 
 
 
 const App = () =>{
     const [isAuth, setIsAuth] = useState(false);
+    const [products,setProducts] = useState([]);
+
+    async function fetchAllProducts(headers) {
+        try {
+            const response = await axios.get(BASE_URL+PRODUCT.GET_ALL,
+                {
+                    headers
+                });
+            setProducts(response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            throw error;
+        }
+    }
 
     useEffect(() => {
         kc.init({
@@ -31,9 +43,11 @@ const App = () =>{
                 console.log('Access Token', kc.token)
                 console.log('parsed', kc.tokenParsed)
                 setIsAuth(kc.authenticated)
+                const {headers} = getHeaders(kc.token);
 
                 /* http client will use this header in every request it sends */
                 httpClient.defaults.headers.common['Authorization'] = `Bearer ${kc.token}`;
+                fetchAllProducts(headers);
 
                 kc.onTokenExpired = () => {
                     console.log('token expired')
@@ -53,7 +67,7 @@ const App = () =>{
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="w-full h-full flex flex-col">
             {isAuth && <Nav
                 isAuthenticated={kc.authenticated}
                 logout={() => {
@@ -63,7 +77,10 @@ const App = () =>{
                     kc.login();
                 }}
             />}
-           {/* <div className='grid'>
+            <Products products={products}/>
+
+
+            {/* <div className='grid'>
                 <div className='col-1'></div>
                 <div className='col-2'>
                     <div className="col">

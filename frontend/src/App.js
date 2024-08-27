@@ -4,7 +4,7 @@ import {httpClient} from "./HttpClient";
 import {kc} from "./Keycloak";
 import Nav from "./components/Nav";
 import axios from "axios";
-import {BASE_URL, getHeaders, PRODUCT, TokenType} from "./utills/ServiceUrls";
+import {BASE_URL, getHeaders, PRODUCT} from "./utills/ServiceUrls";
 import Products from "./components/Products";
 
 

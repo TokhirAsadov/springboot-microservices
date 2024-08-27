@@ -1,16 +1,32 @@
 import {useEffect, useState} from "react";
 import trash from './../icon/trash.svg'
+import axios from "axios";
+import {BASE_URL, getHeaders, PRODUCT} from "../utills/ServiceUrls";
+import {kc} from "../Keycloak";
 
 const Product = ({product, index}) => {
     const [order,setOrder]=useState({...product,quantity: null});
     useEffect(() => {
         console.log(order)
     }, [order]);
+    const {headers} = getHeaders(kc.token);
+
+    const deleteProduct = async (id) => {
+        if (window.confirm(`Delete the ${product.name} product?`)) {
+            await axios.delete(BASE_URL + PRODUCT.DELETE + id, {headers})
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err, "deleting error")
+                })
+        }
+    }
     return (
         <div className='w-64 flex flex-col gap-1 px-4 py-2 rounded-lg bg-white' key={product.id}>
             <div className="flex justify-between">
                 <div className="text-lg font-medium">Product: #{index}</div>
-                <button className={'flex items-center justify-center border border-red-600 text-white rounded-lg px-1 hover:bg-red-500'}>
+                <button onClick={()=> deleteProduct(product.id)} className={'flex items-center justify-center border-red-900 text-white rounded-lg px-1 hover:border hover:bg-red-500'}>
                     <img src={trash} alt="trash" width={20} height={20}/>
                 </button>
             </div>

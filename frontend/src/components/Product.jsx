@@ -16,6 +16,7 @@ const Product = ({product, index}) => {
             await axios.delete(BASE_URL + PRODUCT.DELETE + id, {headers})
                 .then(res => {
                     console.log(res)
+                    alert("Product is deleted successfully!.")
                 })
                 .catch(err => {
                     console.log(err, "deleting error")

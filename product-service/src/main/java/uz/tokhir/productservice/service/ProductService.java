@@ -19,12 +19,13 @@ public class ProductService {
     public ProductResponse createProduct(ProductRequest productRequest) {
         Product product = Product.builder()
                 .name(productRequest.name())
+                .skuCode(productRequest.skuCode())
                 .description(productRequest.description())
                 .price(productRequest.price())
                 .build();
         Product save = productRepository.save(product);
         log.info("Product created successfully");
-        return new ProductResponse(save.getId(), save.getName(), save.getDescription(), save.getPrice());
+        return new ProductResponse(save.getId(), save.getName(), save.getSkuCode(), save.getDescription(), save.getPrice());
     }
 
     public List<ProductResponse> getAllProducts() {
@@ -33,6 +34,6 @@ public class ProductService {
 //        }catch (InterruptedException e) {
 //            throw new RuntimeException(e);
 //        }
-        return productRepository.findAll().stream().map(product -> new ProductResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice())).toList();
+        return productRepository.findAll().stream().map(product -> new ProductResponse(product.getId(), product.getName(),product.getSkuCode(), product.getDescription(), product.getPrice())).toList();
     }
 }

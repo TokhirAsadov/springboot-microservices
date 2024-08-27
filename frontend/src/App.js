@@ -11,7 +11,6 @@ import AddProductPage from "./pages/AddProductPage";
 
 
 const App = () =>{
-    const [isAuth, setIsAuth] = useState(false);
     const [products,setProducts] = useState([]);
 
     async function fetchAllProducts(headers) {
@@ -43,7 +42,6 @@ const App = () =>{
                 console.log('Keycloak', kc)
                 console.log('Access Token', kc.token)
                 console.log('parsed', kc.tokenParsed)
-                setIsAuth(kc.authenticated)
                 const {headers} = getHeaders(kc.token);
 
                 /* http client will use this header in every request it sends */
@@ -69,16 +67,17 @@ const App = () =>{
 
     return (
         <div className="w-full h-full flex flex-col">
-            {kc.authenticated && <Nav
-                isAuthenticated={kc.authenticated}
-                logout={() => {
-                    kc.logout({redirectUri: "http://localhost:3000"});
-                }}
-                login={() => {
-                    kc.login();
-                }}
-            />}
+
             <Router>
+                {kc.authenticated && <Nav
+                    isAuthenticated={kc.authenticated}
+                    logout={() => {
+                        kc.logout({redirectUri: "http://localhost:3000"});
+                    }}
+                    login={() => {
+                        kc.login();
+                    }}
+                />}
                 <Routes>
                     <Route exact path="/" element={<Products products={products}/>}/>
                     <Route exact path="/add-product" element={<AddProductPage />}/>

@@ -81,7 +81,7 @@ const App = () =>{
             <Router>
                 <Routes>
                     <Route exact path="/" element={<Products products={products}/>}/>
-                    <Route exact path="/add-product" element={<AddProductPage isAuth={isAuth}/>}/>
+                    <Route exact path="/add-product" element={<AddProductPage />}/>
                 </Routes>
             </Router>
         </div>

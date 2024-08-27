@@ -20,6 +20,7 @@ export const BASE_URL = "http://localhost:9000/api";
 
 export const PRODUCT = {
   GET_ALL: "/product",
+  DELETE: "/product/",
   EMAIL: "/auth/email/"
 };
 

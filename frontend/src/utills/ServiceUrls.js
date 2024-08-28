@@ -9,6 +9,15 @@ export const getHeaders = (token) => {
   return {headers};
 }
 
+export const getHeadersPost = (token) => {
+  const headers={
+    'Authorization':TokenType+token,
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+  }
+  return {headers};
+}
+
 export const getToken = () => {
   const token=localStorage.getItem(TOKEN);
   return { token }

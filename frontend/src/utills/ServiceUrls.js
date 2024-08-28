@@ -34,3 +34,8 @@ export const PRODUCT = {
   EMAIL: "/auth/email/"
 };
 
+export const ORDER = {
+  CREATE_ORDER: "/order",
+};
+
+

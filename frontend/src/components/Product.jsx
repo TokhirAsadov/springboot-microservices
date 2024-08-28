@@ -1,15 +1,20 @@
 import {useEffect, useState} from "react";
 import trash from './../icon/trash.svg'
 import axios from "axios";
-import {BASE_URL, getHeaders, PRODUCT} from "../utills/ServiceUrls";
+import {BASE_URL, getHeaders, getHeadersPost, ORDER, PRODUCT} from "../utills/ServiceUrls";
 import {kc} from "../Keycloak";
 
 const Product = ({product, index}) => {
-    const [order,setOrder]=useState({...product,quantity: null});
+    const [order,setOrder]=useState({
+        skuCode: product.skuCode,
+        price:product.price,
+        quantity: null
+    });
     useEffect(() => {
         console.log(order)
     }, [order]);
     const {headers} = getHeaders(kc.token);
+    const {headers: headersPost} = getHeadersPost(kc.token);
 
     const deleteProduct = async (id) => {
         if (window.confirm(`Delete the ${product.name} product?`)) {
@@ -23,6 +28,24 @@ const Product = ({product, index}) => {
                 })
         }
     }
+
+    const createOrder = async (data) => {
+        if (data?.quantity!==null && data?.quantity>0){
+            await axios.post(BASE_URL + ORDER.CREATE_ORDER, data,{headers:headersPost})
+                .then(res => {
+                    console.log(res)
+                    alert("Order is placed successfully!.")
+                })
+                .catch(err => {
+                    console.log(err, "order placing error")
+                })
+
+        }
+        else {
+            alert("Quantity should be > 0.")
+        }
+    }
+
     return (
         <div className='w-64 flex flex-col gap-1 px-4 py-2 rounded-lg bg-white' key={product.id}>
             <div className="flex justify-between">
@@ -56,7 +79,7 @@ const Product = ({product, index}) => {
                            onChange={e=> setOrder(prevState => ({...prevState,quantity:e.target.value}))}
                            className={"focus:outline-0 w-16 placeholder-cyan-500"} placeholder={0}/>
                 </div>
-                <button className="text-xs bg-green-600 rounded-lg text-white font-medium px-4 py-2 hover:bg-green-500">Order</button>
+                <button onClick={()=>createOrder(order)} className="text-xs bg-green-600 rounded-lg text-white font-medium px-4 py-2 hover:bg-green-500">Order</button>
             </div>
         </div>
 

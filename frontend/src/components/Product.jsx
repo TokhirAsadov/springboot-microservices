@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import trash from './../icon/trash.svg'
 import axios from "axios";
 import {BASE_URL, getHeaders, getHeadersPost, ORDER, PRODUCT} from "../utills/ServiceUrls";
@@ -10,6 +10,10 @@ const Product = ({product, index}) => {
         price:product.price,
         quantity: null
     });
+    const inputRef = useRef(null);
+    const focus = () => {
+        inputRef.current.focus();
+    };
     useEffect(() => {
         console.log(order)
     }, [order]);
@@ -43,6 +47,7 @@ const Product = ({product, index}) => {
         }
         else {
             alert("Quantity should be > 0.")
+            focus()
         }
     }
 
@@ -75,9 +80,9 @@ const Product = ({product, index}) => {
             <div className="flex justify-between gap-2">
                 <div className="flex items-center gap-2">
                     <span className="text-sm font-medium">Quantity:</span>
-                    <input type="number" name={"quantity"}
+                    <input type="number" name={"quantity"} ref={inputRef}
                            onChange={e=> setOrder(prevState => ({...prevState,quantity:e.target.value}))}
-                           className={"focus:outline-0 w-16 placeholder-cyan-500"} placeholder={0}/>
+                           className={"focus:outline-0 w-16 placeholder-cyan-500 focus:bg-cyan-50 rounded-lg"} placeholder={0}/>
                 </div>
                 <button onClick={()=>createOrder(order)} className="text-xs bg-green-600 rounded-lg text-white font-medium px-4 py-2 hover:bg-green-500">Order</button>
             </div>

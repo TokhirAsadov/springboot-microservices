@@ -79,7 +79,7 @@ const App = () =>{
                     }}
                 />}
                 <Routes>
-                    <Route exact path="/" element={<Products products={products}/>}/>
+                    <Route exact path="/" element={<Products products={products} email={kc.tokenParsed?.email} firstName={kc.tokenParsed?.given_name} lastName={kc.tokenParsed?.family_name}/>}/>
                     <Route exact path="/add-product" element={<AddProductPage />}/>
                 </Routes>
             </Router>

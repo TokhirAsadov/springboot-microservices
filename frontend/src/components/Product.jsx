@@ -4,11 +4,16 @@ import axios from "axios";
 import {BASE_URL, getHeaders, getHeadersPost, ORDER, PRODUCT} from "../utills/ServiceUrls";
 import {kc} from "../Keycloak";
 
-const Product = ({product, index}) => {
+const Product = ({product, index,email,firstName,lastName}) => {
     const [order,setOrder]=useState({
         skuCode: product.skuCode,
         price:product.price,
-        quantity: null
+        quantity: null,
+        userDetails:{
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+        }
     });
     const inputRef = useRef(null);
     const focus = () => {
@@ -34,6 +39,7 @@ const Product = ({product, index}) => {
     }
 
     const createOrder = async (data) => {
+        console.log(data,"data 11")
         if (data?.quantity!==null && data?.quantity>0){
             await axios.post(BASE_URL + ORDER.CREATE_ORDER, data,{headers:headersPost})
                 .then(res => {

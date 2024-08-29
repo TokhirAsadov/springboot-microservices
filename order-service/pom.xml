@@ -121,16 +121,17 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
-		<!--<dependency>
+		<dependency>
 			<groupId>io.confluent</groupId>
 			<artifactId>kafka-avro-serializer</artifactId>
+			<!-- For Confluent Platform 7.0.1 -->
 			<version>7.6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.confluent</groupId>
 			<artifactId>kafka-schema-registry-client</artifactId>
 			<version>7.6.0</version>
-		</dependency>-->
+		</dependency>
 		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
@@ -160,6 +161,13 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<url>https://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>

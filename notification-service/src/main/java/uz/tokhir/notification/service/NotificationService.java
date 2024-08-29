@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
-import uz.tokhir.notification.order.OrderPlacedEvent;
+import uz.tokhir.orderservice.event.OrderPlacedEvent;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class NotificationService {
         // Send email to the customer
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom("javatuz@email.com");
+            messageHelper.setFrom("guvalakat1603@gmail.com");
             messageHelper.setTo(orderPlacedEvent.getEmail().toString());
             messageHelper.setSubject(String.format("Your Order with OrderNumber %s is placed successfully", orderPlacedEvent.getOrderNumber()));
             messageHelper.setText(String.format("""

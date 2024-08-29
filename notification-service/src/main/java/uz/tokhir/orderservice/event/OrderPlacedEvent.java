@@ -1,4 +1,4 @@
-package uz.tokhir.notification.order;
+package uz.tokhir.orderservice.event;
 
 import lombok.Data;
 

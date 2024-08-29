@@ -27,13 +27,15 @@ public class NotificationService {
             messageHelper.setTo(orderPlacedEvent.getEmail().toString());
             messageHelper.setSubject(String.format("Your Order with OrderNumber %s is placed successfully", orderPlacedEvent.getOrderNumber()));
             messageHelper.setText(String.format("""
-                    Assalamu alaykum,
+                    Assalamu alaykum %s,%s
                     
                     Your order with order number %s is placed successfully
                     
                     Best Regards
                     javaTuz
                     """,
+                    orderPlacedEvent.getFirstName().toString(),
+                    orderPlacedEvent.getLastName().toString(),
                     orderPlacedEvent.getOrderNumber()));
         };
         try {

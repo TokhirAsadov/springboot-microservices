@@ -1,7 +1,7 @@
 import Product from "./Product";
 import { useNavigate } from "react-router-dom";
 
-const Products = ({products}) => {
+const Products = ({products,email,firstName,lastName}) => {
     const navigate = useNavigate();
     return (
         <div className={'h-[calc(100vh - 64px)] bg-cyan-50 flex flex-col gap-8 px-16 py-4'}>
@@ -14,7 +14,7 @@ const Products = ({products}) => {
             <div className={'flex flex-wrap gap-2'}>
                 {
                     products?.map((product, index) => (
-                        <Product product={product} index={index+1} key={product.id}/>
+                        <Product product={product} index={index+1} key={product.id} email={email} firstName={firstName} lastName={lastName}/>
                     ))
                 }
             </div>
